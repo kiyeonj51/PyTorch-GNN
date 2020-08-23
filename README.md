@@ -12,7 +12,7 @@ All codes are run on a machine with 2.3 GHz 8-Core Intel Core i9 with 32 GB RAM.
 ## Graph Convolutional Networks [[paper]](https://arxiv.org/abs/1609.02907)
 The code was adapted from [here](https://github.com/tkipf/pygcn).
 ### Usage
-Dataset(cora, citeseer, WebKB) is automatically downloaded by runing main.py.
+Dataset(cora, citeseer, WebKB) is automatically downloaded by runing [main.py](./gcn/main.py).
 ```
 cd gcn
 python main.py --dataset cora
@@ -26,7 +26,7 @@ python main.py --dataset WebKB --sub_dataset wisconsin
 ## Gated Graph Sequence Neural Networks [[paper]](https://arxiv.org/abs/1511.05493)
 The code was adapted from [here](https://github.com/chingyaoc/ggnn.pytorch).
 ### Usage
-Download bAbI dataset by running getdata.sh. Before running it, you have to install [torch](http://torch.ch/docs/getting-started.html#_).
+Download bAbI dataset by running [getdata.sh](./ggnn/getdata.sh). Before running it, you have to install [torch](http://torch.ch/docs/getting-started.html#_).
 ```
 git clone https://github.com/torch/distro.git ~/torch --recursive
 cd ~/torch
@@ -49,7 +49,7 @@ python prepare_dataset.py --dataset aifb
 python prepare_dataset.py --dataset mutag
 python prepare_dataset.py --dataset am
 ```
-Then, run main.py to train rgcn model.
+Then, run [main.py](./rgcn/main.py) to train rgcn model.
 ```
 python main.py --dataset aifb
 python main.py --dataset mutag
