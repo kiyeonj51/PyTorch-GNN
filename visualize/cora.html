@@ -1,0 +1,219 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1>cora</h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 500px;
+            height: 500px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+        #config {
+            float: left;
+            width: 400px;
+            height: 600px;
+        }
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<div id = "config"></div>
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#f09494", "id": 0, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 1, "label": "Rule_Learning", "shape": "dot"}, {"color": "#bcc2f2", "id": 2, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#bcc2f2", "id": 3, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 4, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 5, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 6, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 7, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 8, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 9, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 10, "label": "Neural_Networks", "shape": "dot"}, {"color": "#72bbd0", "id": 11, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#91f0a1", "id": 12, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#629fff", "id": 13, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 14, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 15, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 16, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 17, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 18, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 19, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 20, "label": "Theory", "shape": "dot"}, {"color": "#bcc2f2", "id": 21, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 22, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#91f0a1", "id": 23, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 24, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 25, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 26, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 27, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 28, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 29, "label": "Rule_Learning", "shape": "dot"}, {"color": "#629fff", "id": 30, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 31, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 32, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 33, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 34, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#bcc2f2", "id": 35, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 36, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 37, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 38, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#bcc2f2", "id": 39, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 40, "label": "Theory", "shape": "dot"}, {"color": "#91f0a1", "id": 41, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#72bbd0", "id": 42, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 43, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 44, "label": "Case_Based", "shape": "dot"}, {"color": "#bcc2f2", "id": 45, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 46, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 47, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 48, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#629fff", "id": 49, "label": "Case_Based", "shape": "dot"}, {"color": "#629fff", "id": 50, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 51, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 52, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 53, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#eebcbc", "id": 54, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 55, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#eebcbc", "id": 56, "label": "Theory", "shape": "dot"}, {"color": "#bcc2f2", "id": 57, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 58, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 59, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 60, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#629fff", "id": 61, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 62, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 63, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#629fff", "id": 64, "label": "Case_Based", "shape": "dot"}, {"color": "#72bbd0", "id": 65, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#629fff", "id": 66, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 67, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 68, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 69, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 70, "label": "Theory", "shape": "dot"}, {"color": "#91f0a1", "id": 71, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 72, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 73, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 74, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#629fff", "id": 75, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 76, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 77, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 78, "label": "Theory", "shape": "dot"}, {"color": "#eebcbc", "id": 79, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 80, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 81, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 82, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 83, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 84, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 85, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 86, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 87, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 88, "label": "Theory", "shape": "dot"}, {"color": "#eebcbc", "id": 89, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 90, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 91, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 92, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 93, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 94, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 95, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#629fff", "id": 96, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 97, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 98, "label": "Theory", "shape": "dot"}, {"color": "#91f0a1", "id": 99, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#72bbd0", "id": 100, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 101, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 102, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 103, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 104, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 105, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 106, "label": "Rule_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 107, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 108, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 109, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 110, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 111, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 112, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 113, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 114, "label": "Theory", "shape": "dot"}, {"color": "#91f0a1", "id": 115, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#629fff", "id": 116, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 117, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 118, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 119, "label": "Rule_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 120, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 121, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 122, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 123, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 124, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 125, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 126, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 127, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 128, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 129, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#eebcbc", "id": 130, "label": "Theory", "shape": "dot"}, {"color": "#91f0a1", "id": 131, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 132, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 133, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 134, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 135, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 136, "label": "Rule_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 137, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 138, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#72bbd0", "id": 139, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#eebcbc", "id": 140, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 141, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 142, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 143, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 144, "label": "Neural_Networks", "shape": "dot"}, {"color": "#72bbd0", "id": 145, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 146, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 147, "label": "Case_Based", "shape": "dot"}, {"color": "#bcc2f2", "id": 148, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#629fff", "id": 149, "label": "Case_Based", "shape": "dot"}, {"color": "#629fff", "id": 150, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 151, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 152, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 153, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 154, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 155, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 156, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 157, "label": "Theory", "shape": "dot"}, {"color": "#eebcbc", "id": 158, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 159, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 160, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 161, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 162, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 163, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#eebcbc", "id": 164, "label": "Theory", "shape": "dot"}, {"color": "#eebcbc", "id": 165, "label": "Rule_Learning", "shape": "dot"}, {"color": "#629fff", "id": 166, "label": "Case_Based", "shape": "dot"}, {"color": "#bcc2f2", "id": 167, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 168, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 169, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 170, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 171, "label": "Theory", "shape": "dot"}, {"color": "#629fff", "id": 172, "label": "Case_Based", "shape": "dot"}, {"color": "#bcc2f2", "id": 173, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 174, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 175, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 176, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 177, "label": "Theory", "shape": "dot"}, {"color": "#eebcbc", "id": 178, "label": "Rule_Learning", "shape": "dot"}, {"color": "#f09494", "id": 179, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 180, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 181, "label": "Theory", "shape": "dot"}, {"color": "#91f0a1", "id": 182, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#629fff", "id": 183, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 184, "label": "Rule_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 185, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 186, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 187, "label": "Neural_Networks", "shape": "dot"}, {"color": "#72bbd0", "id": 188, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#72bbd0", "id": 189, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 190, "label": "Neural_Networks", "shape": "dot"}, {"color": "#72bbd0", "id": 191, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 192, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 193, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 194, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 195, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 196, "label": "Rule_Learning", "shape": "dot"}, {"color": "#bcc2f2", "id": 197, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 198, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 199, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 200, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 201, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 202, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 203, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 204, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 205, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 206, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 207, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 208, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 209, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#bcc2f2", "id": 210, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 211, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 212, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 213, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 214, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 215, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 216, "label": "Rule_Learning", "shape": "dot"}, {"color": "#f09494", "id": 217, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 218, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#72bbd0", "id": 219, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#bcc2f2", "id": 220, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#629fff", "id": 221, "label": "Case_Based", "shape": "dot"}, {"color": "#629fff", "id": 222, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 223, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 224, "label": "Rule_Learning", "shape": "dot"}, {"color": "#629fff", "id": 225, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 226, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 227, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 228, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 229, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 230, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 231, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 232, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 233, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 234, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 235, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 236, "label": "Case_Based", "shape": "dot"}, {"color": "#72bbd0", "id": 237, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 238, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 239, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#72bbd0", "id": 240, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 241, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 242, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 243, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 244, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 245, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 246, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 247, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 248, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 249, "label": "Rule_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 250, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#eebcbc", "id": 251, "label": "Theory", "shape": "dot"}, {"color": "#bcc2f2", "id": 252, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 253, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 254, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 255, "label": "Theory", "shape": "dot"}, {"color": "#629fff", "id": 256, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 257, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 258, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 259, "label": "Case_Based", "shape": "dot"}, {"color": "#91f0a1", "id": 260, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 261, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 262, "label": "Case_Based", "shape": "dot"}, {"color": "#f09494", "id": 263, "label": "Neural_Networks", "shape": "dot"}, {"color": "#eebcbc", "id": 264, "label": "Theory", "shape": "dot"}, {"color": "#72bbd0", "id": 265, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#629fff", "id": 266, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 267, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 268, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 269, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 270, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 271, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 272, "label": "Neural_Networks", "shape": "dot"}, {"color": "#72bbd0", "id": 273, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#bcc2f2", "id": 274, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 275, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 276, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 277, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#91f0a1", "id": 278, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 279, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#91f0a1", "id": 280, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#bcc2f2", "id": 281, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#f09494", "id": 282, "label": "Neural_Networks", "shape": "dot"}, {"color": "#f09494", "id": 283, "label": "Neural_Networks", "shape": "dot"}, {"color": "#629fff", "id": 284, "label": "Case_Based", "shape": "dot"}, {"color": "#629fff", "id": 285, "label": "Case_Based", "shape": "dot"}, {"color": "#eebcbc", "id": 286, "label": "Rule_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 287, "label": "Theory", "shape": "dot"}, {"color": "#629fff", "id": 288, "label": "Case_Based", "shape": "dot"}, {"color": "#629fff", "id": 289, "label": "Case_Based", "shape": "dot"}, {"color": "#72bbd0", "id": 290, "label": "Genetic_Algorithms", "shape": "dot"}, {"color": "#f09494", "id": 291, "label": "Neural_Networks", "shape": "dot"}, {"color": "#91f0a1", "id": 292, "label": "Probabilistic_Methods", "shape": "dot"}, {"color": "#f09494", "id": 293, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 294, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#bcc2f2", "id": 295, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 296, "label": "Theory", "shape": "dot"}, {"color": "#f09494", "id": 297, "label": "Neural_Networks", "shape": "dot"}, {"color": "#bcc2f2", "id": 298, "label": "Reinforcement_Learning", "shape": "dot"}, {"color": "#eebcbc", "id": 299, "label": "Theory", "shape": "dot"}]);
+        edges = new vis.DataSet([{"from": 163, "to": 141}, {"from": 163, "to": 174}, {"from": 163, "to": 191}, {"from": 163, "to": 188}, {"from": 163, "to": 55}, {"from": 163, "to": 42}, {"from": 163, "to": 145}, {"from": 163, "to": 129}, {"from": 163, "to": 219}, {"from": 163, "to": 237}, {"from": 163, "to": 22}, {"from": 163, "to": 290}, {"from": 163, "to": 266}, {"from": 87, "to": 47}, {"from": 66, "to": 69}, {"from": 66, "to": 215}, {"from": 66, "to": 183}, {"from": 66, "to": 34}, {"from": 66, "to": 149}, {"from": 66, "to": 288}, {"from": 251, "to": 6}, {"from": 251, "to": 88}, {"from": 289, "to": 64}, {"from": 74, "to": 154}, {"from": 74, "to": 252}, {"from": 74, "to": 263}, {"from": 74, "to": 71}, {"from": 74, "to": 19}, {"from": 76, "to": 131}, {"from": 76, "to": 181}, {"from": 76, "to": 250}, {"from": 294, "to": 83}, {"from": 294, "to": 21}, {"from": 294, "to": 103}, {"from": 294, "to": 186}, {"from": 294, "to": 173}, {"from": 294, "to": 191}, {"from": 294, "to": 252}, {"from": 294, "to": 85}, {"from": 294, "to": 128}, {"from": 294, "to": 153}, {"from": 294, "to": 277}, {"from": 70, "to": 255}, {"from": 75, "to": 288}, {"from": 84, "to": 12}, {"from": 84, "to": 155}, {"from": 84, "to": 27}, {"from": 228, "to": 259}, {"from": 228, "to": 119}, {"from": 228, "to": 52}, {"from": 122, "to": 124}, {"from": 122, "to": 127}, {"from": 127, "to": 124}, {"from": 295, "to": 197}, {"from": 295, "to": 220}, {"from": 295, "to": 210}, {"from": 136, "to": 244}, {"from": 136, "to": 92}, {"from": 136, "to": 159}, {"from": 236, "to": 156}, {"from": 258, "to": 7}, {"from": 258, "to": 268}, {"from": 258, "to": 0}, {"from": 258, "to": 8}, {"from": 258, "to": 14}, {"from": 158, "to": 184}, {"from": 192, "to": 10}, {"from": 192, "to": 193}, {"from": 192, "to": 280}, {"from": 193, "to": 10}, {"from": 193, "to": 238}, {"from": 193, "to": 74}, {"from": 193, "to": 280}, {"from": 3, "to": 197}, {"from": 35, "to": 34}, {"from": 39, "to": 24}, {"from": 39, "to": 82}, {"from": 109, "to": 171}, {"from": 114, "to": 171}, {"from": 41, "to": 94}, {"from": 41, "to": 23}, {"from": 41, "to": 115}, {"from": 82, "to": 239}, {"from": 82, "to": 295}, {"from": 202, "to": 204}, {"from": 204, "to": 274}, {"from": 157, "to": 214}, {"from": 157, "to": 181}, {"from": 157, "to": 78}, {"from": 160, "to": 125}, {"from": 60, "to": 252}, {"from": 63, "to": 210}, {"from": 63, "to": 153}, {"from": 162, "to": 173}, {"from": 227, "to": 296}, {"from": 0, "to": 8}, {"from": 14, "to": 232}, {"from": 14, "to": 242}, {"from": 14, "to": 31}, {"from": 14, "to": 268}, {"from": 14, "to": 0}, {"from": 14, "to": 8}, {"from": 15, "to": 234}, {"from": 15, "to": 254}, {"from": 15, "to": 152}, {"from": 15, "to": 253}, {"from": 15, "to": 129}, {"from": 15, "to": 80}, {"from": 45, "to": 220}, {"from": 129, "to": 188}, {"from": 129, "to": 22}, {"from": 250, "to": 170}, {"from": 250, "to": 31}, {"from": 250, "to": 107}, {"from": 250, "to": 108}, {"from": 250, "to": 33}, {"from": 4, "to": 170}, {"from": 284, "to": 64}, {"from": 285, "to": 231}, {"from": 88, "to": 116}, {"from": 88, "to": 225}, {"from": 88, "to": 44}, {"from": 88, "to": 208}, {"from": 219, "to": 38}, {"from": 144, "to": 188}, {"from": 18, "to": 127}, {"from": 107, "to": 108}, {"from": 86, "to": 249}, {"from": 25, "to": 20}, {"from": 142, "to": 230}, {"from": 142, "to": 227}, {"from": 245, "to": 172}, {"from": 30, "to": 231}, {"from": 30, "to": 285}, {"from": 262, "to": 266}, {"from": 269, "to": 24}, {"from": 243, "to": 53}, {"from": 12, "to": 155}, {"from": 267, "to": 20}, {"from": 238, "to": 46}, {"from": 137, "to": 138}, {"from": 138, "to": 115}, {"from": 191, "to": 22}, {"from": 286, "to": 178}, {"from": 100, "to": 265}, {"from": 270, "to": 276}, {"from": 155, "to": 117}, {"from": 161, "to": 95}, {"from": 201, "to": 143}, {"from": 214, "to": 78}, {"from": 146, "to": 17}, {"from": 38, "to": 273}, {"from": 268, "to": 232}, {"from": 150, "to": 50}, {"from": 188, "to": 141}, {"from": 188, "to": 42}, {"from": 188, "to": 139}, {"from": 188, "to": 120}, {"from": 188, "to": 262}, {"from": 189, "to": 188}, {"from": 189, "to": 42}, {"from": 189, "to": 163}, {"from": 143, "to": 180}, {"from": 196, "to": 216}, {"from": 196, "to": 195}, {"from": 169, "to": 212}, {"from": 240, "to": 61}, {"from": 72, "to": 202}, {"from": 210, "to": 148}, {"from": 257, "to": 36}, {"from": 128, "to": 103}, {"from": 126, "to": 94}, {"from": 280, "to": 10}, {"from": 248, "to": 105}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "edges"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+        // if this network requires displaying the configure window,
+        // put it in its div
+        options.configure["container"] = document.getElementById("config");
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
