@@ -1,8 +1,8 @@
 ## A PyTorch implementation of Graph Neural Network
 This is a collection of PyTorch implementation of Graph Neural Networks.
-* [Graph Convolutional Networks](graph convolutional networks)
-* [Gated Graph Sequence Neural Networks](gated graph sequence neural networks)
-* [Relational Graph Convolutional Networks](relational graph convolutional networks)
+* [Graph Convolutional Networks](#graph convolutional networks)
+* [Gated Graph Sequence Neural Networks](#gated graph sequence neural networks)
+* [Relational Graph Convolutional Networks](#relational graph convolutional networks)
 
 ## Environment
 All codes are run on a machine with 2.3 GHz 8-Core Intel Core i9 with 32 GB RAM. 
