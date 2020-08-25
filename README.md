@@ -1,8 +1,10 @@
 ## A PyTorch implementation of Graph Neural Network
 This is a collection of PyTorch implementation of Graph Neural Networks.
-* Graph Convolutional Networks
-* Gated Graph Sequence Neural Networks
-* Relational Graph Convolutional Networks
+* (Done) Graph Convolutional Networks
+* (Done) Gated Graph Sequence Neural Networks
+* (Done) Relational Graph Convolutional Networks
+* (TODO) Graph Attention Network
+* (TODO) Graph Covolutino Policy Network
 
 ## Environment
 All codes are run on a machine with 2.3 GHz 8-Core Intel Core i9 with 32 GB RAM. 
@@ -10,7 +12,7 @@ All codes are run on a machine with 2.3 GHz 8-Core Intel Core i9 with 32 GB RAM.
 * pytorch 1.6.0
 
 ## Graph Convolutional Networks [[paper]](https://arxiv.org/abs/1609.02907)
-The code was adapted from [here](https://github.com/tkipf/pygcn).
+The code was slightly adapted from [here](https://github.com/tkipf/pygcn).
 
 Dataset(cora, citeseer, WebKB) is automatically downloaded by runing main.py.
 ```
@@ -24,7 +26,7 @@ python main.py --dataset WebKB --sub_dataset wisconsin
 ```
 
 ## Gated Graph Sequence Neural Networks [[paper]](https://arxiv.org/abs/1511.05493)
-The code was adapted from [here](https://github.com/chingyaoc/ggnn.pytorch).
+The code was slightly adapted from [here](https://github.com/chingyaoc/ggnn.pytorch).
 
 Download bAbI dataset by running getdata.sh. Before running it, you have to install [torch](http://torch.ch/docs/getting-started.html#_).
 ```
@@ -41,7 +43,7 @@ python main.py --verbal --task_id 15 --state_dim 5 --n_epochs 10
 python main.py --verbal --task_id 16 --state_dim 10 --n_epochs 150
 ```
 ## Relational Graph Convolutional Networks [[paper]](https://arxiv.org/abs/1703.06103)
-The code was adapted from [here](https://github.com/mjDelta/relation-gcn-pytorch).
+The code was slightly adapted from [here](https://github.com/mjDelta/relation-gcn-pytorch).
 Before running the code, you have to download datasets (aifb, mutag, am).
 ```
 cd rgcn
