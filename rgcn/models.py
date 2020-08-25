@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2019-08-27 11:32:45
-# @Author  : Mengji Zhang (zmj_xy@sjtu.edu.cn)
-
 from torch.nn import Module, Sequential, Linear, ReLU, Dropout, LogSoftmax
 from rgcn.layers import RelationalGraphConvolution
 import torch.nn.functional as F

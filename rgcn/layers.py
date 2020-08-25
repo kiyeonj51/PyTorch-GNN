@@ -1,8 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# @Date    : 2019-08-27 11:14:53
-# @Author  : Mengji Zhang (zmj_xy@sjtu.edu.cn)
-
 import torch
 from torch.nn import Parameter
 from torch.nn.modules.module import Module
